@@ -1,0 +1,5 @@
+---
+title: "02-normal-distribution"
+output: html_document
+---
+
