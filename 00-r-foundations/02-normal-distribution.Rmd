@@ -1,6 +1,20 @@
 ---
-title: "02-normal-distribution"
-output: html_document
+title: "Normal Distribution"
+date: "December 8, 2025"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    highlight: pygments
+fontsize: 12pt
+geometry: margin=1in
+urlcolor: blue
+header-includes:
+  - \usepackage[font=small,labelfont=bf]{caption}
+  - \usepackage[default]{lato}
+  - \usepackage[scale=0.9]{sourcecodepro}
+  - \usepackage[T1]{fontenc}
 ---
 
 # Random sampling from a normal distribution

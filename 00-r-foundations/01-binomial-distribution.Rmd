@@ -1,6 +1,20 @@
 ---
-title: "01-binomial-distribution"
-output: html_document
+title: "Binomial Distribution"
+date: "December 8, 2025"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    highlight: pygments
+fontsize: 12pt
+geometry: margin=1in
+urlcolor: blue
+header-includes:
+  - \usepackage[font=small,labelfont=bf]{caption}
+  - \usepackage[default]{lato}
+  - \usepackage[scale=0.9]{sourcecodepro}
+  - \usepackage[T1]{fontenc}
 ---
 
 # Bernoulli trials
@@ -35,7 +49,7 @@ plot(table(x))
 # Binomial Distribution Math
 
 $$
-P(X=r) = {n \choose r} \cdot p^r \cdot (1-p)^{n-r}
+P(X=r) = \binom{n}{i} \cdot p^r \cdot (1-p)^{n-r}
 $$
 
 ```{r}
@@ -51,7 +65,7 @@ dbinom(x = 2, size = 5, prob = 0.3)
 # Cummulative Distribution
 
 $$
-P(X \leq r) = \sum_{i=0}^{r} {n \choose i} \cdot p^i \cdot (1-p)^{n-i}
+P(X \leq r) = \sum_{i=0}^{r} \binom{n}{i} \cdot p^i \cdot (1-p)^{n-i}
 $$
 
 ```{r}
