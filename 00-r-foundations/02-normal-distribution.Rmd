@@ -37,7 +37,7 @@ hist(rnorm(n = 1000))
 ```{r}
 # Calculate P(X = r) in a normal distribution
 # Using `dnorm()`
-# Probability of getting a specific value of range of values in the normal distribution
+# Probability of getting a specific value/range in the normal distribution
 # x: specific value or range of values
 # mean & sd follow the same rules as before
 
@@ -89,7 +89,8 @@ pnorm(q = 1.644854) # 0.95
 # QQ-Plot
 
 ```{r}
-# A QQ-plot is used to visually determine how close a sample is to a specified distribution
+# A QQ-plot is used to visually determine
+# how close a sample is to a specified distribution
 
 # Example:
 norm_samp <- rnorm(n = 100)
