@@ -3,3 +3,82 @@ title: "01-binomial-distribution"
 output: html_document
 ---
 
+# Bernoulli trials
+
+```{r}
+# Simulate Bernoulli trials using `rbinom()`
+# rbinom(n, size, prob)
+# n: number of observations
+# size: number of trials in each observation
+# prob: probability of success on each trial
+# returns 1 for success, 0 for failure
+
+# Example: 10 observations of flipping a fair coin once
+rbinom(n = 10, size = 1, prob = 0.5)
+
+# Example: 10 observations of flipping a fair coin five times
+# Mathematically written as: Bin(5, 0.5)
+rbinom(n = 10, size = 5, prob = 0.5)
+```
+
+```{r}
+# Tabulating the results
+x <- rbinom(n = 1000, size = 5, prob = 0.5)
+table(x)
+```
+
+```{r}
+# Plotting the results
+plot(table(x))
+```
+
+# Binomial Distribution Math
+
+$$
+P(X=r) = {n \choose r} \cdot p^r \cdot (1-p)^{n-r}
+$$
+
+```{r}
+# This formula is carried out using `dbinom()`
+# x: number of successes
+# size: number of trials
+# prob: probability of success on each trial
+
+# Example P(X = 2) for n=5 trials with p=0.3
+dbinom(x = 2, size = 5, prob = 0.3)
+```
+
+# Cummulative Distribution
+
+$$
+P(X \leq r) = \sum_{i=0}^{r} {n \choose i} \cdot p^i \cdot (1-p)^{n-i}
+$$
+
+```{r}
+# This formula is carried out using `pbinom()`
+# q: number of successes
+# size: number of trials
+# prob: probability of success on each trial
+# lower.tail: if TRUE (default) -> P(X <= r), if FALSE -> P(X > r)
+
+# Example P(X <= 2) for n=5 trials with p=0.3
+pbinom(q = 2, size = 5, prob = 0.3)
+```
+
+# Mean and Standard Deviation
+
+```{r}
+# Mean
+# Method 1 (np)
+5 * 0.3
+# Method 2 (simulate over a million observations)
+mean(rbinom(n = 1e6, size = 5, prob = 0.3))
+```
+
+```{r}
+# Standard deviation
+# Method 1 (sqrt(n * p * (1-p)))
+sqrt(5 * 0.3 * 0.7)
+# Method 2 (simulate over a million observations)
+sd(rbinom(n = 1e6, size = 5, prob = 0.3))
+```
