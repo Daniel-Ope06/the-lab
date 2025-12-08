@@ -3,3 +3,82 @@ title: "02-normal-distribution"
 output: html_document
 ---
 
+# Random sampling from a normal distribution
+
+```{r}
+# Simulate this using `rnorm()`
+# n: number of observations
+# mean: 0 by default
+# sd: standard deviation, 1 by default
+rnorm(n = 10, mean = 5, sd = 2)
+```
+
+```{r}
+# Plotting a normal distribution
+hist(rnorm(n = 1000))
+```
+
+# Density of a normal distribution
+
+```{r}
+# Calculate P(X = r) in a normal distribution
+# Using `dnorm()`
+# Probability of getting a specific value of range of values in the normal distribution
+# x: specific value or range of values
+# mean & sd follow the same rules as before
+
+# Example: Probability of drawing 3 (P(X = 3)) from N(0,1)
+dnorm(x = 3)
+
+#Example: Probability of drawing -3 to 3 from N(0,1)
+sum(dnorm(-3:3))
+```
+
+```{r}
+# Density Graph
+x <- seq(from=-4,to=4,len=100)
+plot(x,dnorm(x))
+```
+
+# Cumulative Distribution
+
+```{r}
+# Calculate P(X <= r) in a normal distribution
+# Using `pnorm()`
+# q: specific value (r) or range of values
+# mean & sd follow the same rules as before
+# lower.tail: if TRUE (default) -> P(X <= r), if FALSE -> P(X > r)
+
+# Example: Probability of drawing 3 or less (P X <= 3) from N(0,1)
+pnorm(3)
+
+# Example: Probability of drawing -3 or more (P X > -3) from N(0,1)
+pnorm(-3, lower.tail = FALSE)
+```
+
+# Quantile Function
+
+```{r}
+# To get r given P(X <= r)
+# Using `qnorm()`
+# p: probability of P(X <= r)
+# mean, sd & lower.tail follow the same rules as before
+
+# Example: In N(0,1) there is a 5% chance of exceeding x. Find x?
+# 0.05 chance of exceeding x, means 0.95 chance of getting x or less
+qnorm(p = 0.95) # = 1.644854
+
+# Verify result
+pnorm(q = 1.644854) # 0.95
+```
+
+# QQ-Plot
+
+```{r}
+# A QQ-plot is used to visually determine how close a sample is to a specified distribution
+
+# Example:
+norm_samp <- rnorm(n = 100)
+qqnorm(y = norm_samp)
+abline(a=0, b=1, col='grey')
+```
