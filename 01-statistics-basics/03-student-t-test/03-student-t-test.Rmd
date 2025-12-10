@@ -1,5 +1,118 @@
 ---
-title: "03-student-t-test"
-output: html_document
+title: "The Student t test"
+date: "December 10, 2025"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    highlight: pygments
+fontsize: 12pt
+geometry: margin=1in
+urlcolor: blue
+header-includes:
+  - \usepackage[font=small,labelfont=bf]{caption}
+  - \usepackage[default]{lato}
+  - \usepackage[scale=0.9]{sourcecodepro}
+  - \usepackage[T1]{fontenc}
 ---
 
+# Student t test Syntax
+
+```{r}
+# Calculated using `t.test()`
+# x: sample data ; y: (optional) sample data
+# alternative: alternative hypothesis [two.sided, less, greater]
+#              default value = "two.sided"
+# mu: If one sample test -> true value of the mean
+#     If two sample test -> difference in means
+#     Default value = 0
+# paired: paired t-test, default value = FALSE
+
+# p-value output gotten from `$p.value`
+```
+
+# Student t test Examples
+
+```{r}
+# Example: One sample, two-sided test
+
+# Null: sample mean = 100
+# Alternative: sample mean != 100
+
+apples <- c(95, 104, 101, 100, 99, 102, 98, 94, 94, 93)
+t.test(apples, mu = 100)
+
+# To specifically show the p-value alone
+t.test(apples, mu = 100)$p.value
+```
+
+```{r}
+# Example: One sample, one-sided test
+
+# Null: sample mean = 6.5
+# Alternative: sample mean < 6.5
+
+acid <- c(6.1, 6.4, 5.8, 5.8, 6.6, 5.3, 6.8, 6.4, 6.9, 5.8, 5.5, 6.3)
+t.test(acid, mu = 6.5, alternative = "less")$p.value
+```
+
+```{r}
+# Example: Two sample, one-sided test
+
+# Null: vitC mean = plac mean
+# Alternative: vitC mean < plac mean
+
+vitC <- c(5.5, 6, 7, 6, 7.5, 6, 7.5, 5.5, 7, 6.5)
+plac <- c(6.5, 6, 8.5, 7, 6.5, 8, 7.5, 6.5, 7.5, 6, 8.5, 7.0)
+
+t.test(vitC, plac, alternative = "less")$p.value
+```
+
+```{r}
+# Example: Paired t-test, one-sided test
+
+# Paired t-test is used when there is a natural pairing between two populations.
+
+# Null: patients_before mean = patients_after mean
+# Alternative: patients_before mean < patients_after mean
+
+patients_before <- c(24.2, 30.4, 32.7, 19.8, 25.1, 24.9, 22.2)
+patients_after <- c(25.5, 31.2, 32.9, 20.4, 25.6 ,24.7, 22.9)
+
+t.test(patients_before, patients_after,
+       alternative = "less", paired = TRUE)$p.value
+```
+
+# Confidence Interval of Sample
+
+```{r}
+# Method 1:
+# Gotten using `$conf.int`
+
+# To calculate this:
+# mu is left as 0
+# no other parameters are set
+
+heart <- c(66,73,72,80,84,60)
+t.test(heart)$conf.int # 95% confidence interval by default
+```
+
+```{r}
+# Method 2:
+# Calculate manually, if variance is known
+
+loaves <- c(804, 804, 800, 797, 805, 800, 810, 803, 806, 800, 801, 802,
+800, 808, 806, 804, 810, 799, 804, 803, 805, 803, 804, 793, 808,
+810, 801, 802, 797, 802)
+
+x_bar <- mean(loaves)
+sd <- sd(loaves)
+n <- length(loaves)
+SEM <- sd/sqrt(n)
+# For 95% confidence interval
+f <- qnorm(0.975) # [100-95]/2 = 2.5% -> 100-2.5 = 97.5%
+
+conf_int <- c(x_bar - f*SEM, x_bar + f*SEM)
+conf_int
+```
