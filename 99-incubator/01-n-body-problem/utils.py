@@ -1,7 +1,51 @@
 from system import System
 from typing import List, Tuple
 import numpy as np
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+
+def plot_initial_conditions(
+    system: System,
+    labels: list,
+    colors: list,
+    legend: bool,
+) -> None:
+    """
+    Plot the initial positions.
+
+    Parameters
+    ----------
+    system : System
+        System object.
+    labels : list
+        Labels for the particles.
+    colors : list
+        Colors for the particles.
+    legend : bool
+        Whether to show the legend.
+
+    Source
+    ------
+    - Original code by Alvin.
+    - Retrieved from:
+    https://github.com/alvinng4/grav_sim/blob/main/5_steps_to_n_body_simulation/python/common.py
+    """
+    fig, ax = plt.subplots()
+    ax.set_xlabel("$x$ (AU)")
+    ax.set_ylabel("$y$ (AU)")
+
+    for i in range(system.num_bodies):
+        ax.scatter(
+            system.positions[i, 0], system.positions[i, 1],
+            marker="o", color=colors[i], label=labels[i]
+        )
+
+    if legend:
+        ax.legend()
+
+    # Here, you may need to change to plt.savefig(file_name) if
+    # plt.show() does not work in your environment.
+    plt.show()
 
 
 def get_initial_conditions(
