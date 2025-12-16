@@ -1,0 +1,5 @@
+---
+title: "06-chi-square-test"
+output: html_document
+---
+
