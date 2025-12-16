@@ -71,3 +71,75 @@ class NBodySystem:
             mass_column * r_ij * inv_r_cubed[:, :, np.newaxis],
             axis=0
         )
+
+    def _step(self, dt: float) -> None:
+        """Advance the simulation by one time step using Euler-Cromer method.
+
+        Args:
+            dt (float): Time step.
+        """
+        self._calculate_accelerations()
+        self.velocities += self.accelerations * dt
+        self.positions += self.velocities * dt
+
+    def run(
+        self,
+        time_frame: float,
+        time_step: float,
+        output_interval: float
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Run the simulation for a specified duration and return the history.
+
+        Args:
+            time_frame (float): The total duration of the simulation in days.
+            time_step (float): The integration time step (dt) in days.
+            output_interval (float): Save frequency in days.
+
+        Returns:
+            tuple[np.ndarray, np.ndarray, np.ndarray]: A tuple containing:
+                - position_history: Shape (num_snapshots, num_bodies, 3)
+                - velocity_history: Shape (num_snapshots, num_bodies, 3)
+                - time_history: Shape (num_snapshots,)
+        """
+        # Estimate array size (+2 for initial and final time)
+        num_snapshots: int = int(time_frame // output_interval + 2)
+
+        # Initialize history arrays
+        # 3 is at the end because it's in 3D space (x,y,z)
+        position_history: np.ndarray = np.zeros(
+            (num_snapshots, self.num_bodies, 3))
+        velocity_history: np.ndarray = np.zeros(
+            (num_snapshots, self.num_bodies, 3))
+        time_history: np.ndarray = np.zeros(num_snapshots)
+
+        # Store initial conditions
+        position_history[0] = self.positions
+        velocity_history[0] = self.velocities
+        time_history[0] = 0.0
+
+        # Setup loop variables
+        output_count: int = 1
+        current_time: float = 0.0
+        next_output_time: float = output_count * output_interval
+        num_steps: int = int(time_frame / time_step)
+
+        # Main simulation loop
+        for i in range(num_steps):
+            # Advance system by dt
+            self._step(time_step)
+            current_time = i * time_step
+
+            # Check if it is time to save a snapshot
+            if current_time >= next_output_time:
+                position_history[output_count] = self.positions
+                velocity_history[output_count] = self.velocities
+                time_history[output_count] = current_time
+                output_count += 1
+                next_output_time = output_count * output_interval
+
+        # Truncate arrays to remove unused zeros
+        return (
+            position_history[:output_count],
+            velocity_history[:output_count],
+            time_history[:output_count]
+        )
