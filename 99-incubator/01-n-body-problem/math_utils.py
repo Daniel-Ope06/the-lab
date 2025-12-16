@@ -1,11 +1,11 @@
-from system import System
+from n_body_system import NBodySystem
 from typing import List, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def plot_initial_conditions(
-    system: System,
+    system: NBodySystem,
     labels: list,
     colors: list,
     legend: bool,
@@ -50,7 +50,7 @@ def plot_initial_conditions(
 
 def get_initial_conditions(
     initial_condition: str,
-) -> Tuple[System, List[str | None], List[str | None], bool]:
+) -> Tuple[NBodySystem, List[str | None], List[str | None], bool]:
     """
     Returns the initial conditions for solar system,
     with units AU, days, and M_sun.
@@ -315,7 +315,7 @@ def get_initial_conditions(
         v = np.array([V1, V2, V3])
         m = np.array([3.0 / G, 4.0 / G, 5.0 / G])
 
-        system = System(
+        system = NBodySystem(
             num_bodies=len(m),
             positions=x,
             velocities=v,
@@ -392,7 +392,7 @@ def get_initial_conditions(
             ]
         )
 
-        system = System(
+        system = NBodySystem(
             num_bodies=len(m),
             positions=x,
             velocities=v,
@@ -484,7 +484,7 @@ def get_initial_conditions(
             ]
         )
 
-        system = System(
+        system = NBodySystem(
             num_bodies=len(m),
             positions=x,
             velocities=v,

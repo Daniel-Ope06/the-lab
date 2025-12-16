@@ -1,13 +1,14 @@
 import numpy as np
 
 
-class System:
-    """Represents the N-body system.
+class NBodySystem:
+    """Represents an N-body gravitational system.
 
     Attributes:
         num_bodies (int): Number of bodies in the system.
         positions (np.ndarray): Positions of bodies in 3D space.
         velocities (np.ndarray): Velocities of bodies in 3D space.
+        accelerations (np.ndarray): Accelerations of bodies in 3D space.
         masses (np.ndarray): Masses of bodies.
         G (float): Gravitational constant.
     """
@@ -19,9 +20,9 @@ class System:
         self.num_bodies: int = num_bodies
         self.positions: np.ndarray = positions
         self.velocities: np.ndarray = velocities
-        self.G: float = G
-        self.masses: np.ndarray = masses
         self.accelerations: np.ndarray = np.zeros((num_bodies, num_bodies))
+        self.masses: np.ndarray = masses
+        self.G: float = G
 
     def recenter_com_to_origin(self) -> None:
         """Shift the system so:
@@ -37,7 +38,7 @@ class System:
         self.positions -= center_of_mass_position
         self.velocities -= center_of_mass_velocity
 
-    def calculate_accelerations(self) -> None:
+    def _calculate_accelerations(self) -> None:
         """Calculate the gravitational acceleration of each body"""
         # Prepare positions for broadcasting (N x N matrix)
         # r_j [shape: (N, 1, 3)] column vector of positions
