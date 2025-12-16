@@ -1,5 +1,73 @@
 ---
-title: "05-fishers-exact-test"
-output: html_document
+title: "Fisher's Exact Test"
+date: "December 16, 2025"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    highlight: pygments
+fontsize: 12pt
+geometry: margin=1in
+urlcolor: blue
+header-includes:
+  - \usepackage[font=small,labelfont=bf]{caption}
+  - \usepackage[default]{lato}
+  - \usepackage[scale=0.9]{sourcecodepro}
+  - \usepackage[T1]{fontenc}
 ---
 
+\newpage
+
+# Example: Old vs New Treatment
+
+We are researching a new medical treatment and wish to discover whether it is better than the old one.
+
+```{r}
+M <- matrix(c(5,2,2,4),2,2)
+dimnames(M) <- list(treatment=c("new","old"),cured=c(TRUE,FALSE))
+M
+```
+
+```{r}
+# x: contingency table (2 by 2)
+# alternative: Alternative hypothesis
+# Testing if being in 'new' increases the odds of being in 'TRUE'
+
+fisher.test(x = M, alternative = "greater")
+```
+
+# How to use 'alternative'
+
+```{r}
+M <- matrix(c('a','c','b','d'),2,2)
+dimnames(M) <- list(c("Row 1","Row 2"),c("Col 1","Col 2"))
+knitr::kable(M)
+```
+
+The **Odds Ratio (OR)** is estimated roughly as:
+$$
+OR \approx \frac{a \times d}{b \times c}
+$$
+
+The test compares:
+
+- the odds of an event in **Row 1** falling into **Column 1** versus
+- the odds of an event in **Row 2** falling into **Column 1**.
+
+## alternative = "greater"
+
+- **Row 1 is more associated with Column 1** than Row 2 is.
+- Testing if the **Odds Ratio > 1**.
+- In English: "Being in Row 1 increases the odds of being in Column 1."
+
+## alternative = "less"
+
+- **Row 1 is less associated with Column 1** than Row 2 is.
+- Testing if the **Odds Ratio < 1**.
+- In English: "Being in Row 1 decreases the odds of being in Column 1."
+
+## alternative = "two.sided"
+
+- Testing if the **Odds Ratio $\neq$ 1**.
+- In English: "Row 1 and Row 2 have different distributions across the columns, but I don't assume a specific direction beforehand."
