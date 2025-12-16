@@ -4,6 +4,59 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def plot_trajectory(
+    sol_x: np.ndarray,
+    labels: list,
+    colors: list,
+    legend: bool,
+) -> None:
+    """
+    Plot the 2D trajectory.
+
+    Parameters
+    ----------
+    sol_x : np.ndarray
+        Solution position array with shape (N_steps, num_particles, 3).
+    labels : list
+        List of labels for the particles.
+    colors : list
+        List of colors for the particles.
+    legend : bool
+        Whether to show the legend.
+
+    Source
+    ------
+    - Original code by Alvin.
+    - Retrieved from:
+    https://github.com/alvinng4/grav_sim/blob/main/5_steps_to_n_body_simulation/python/common.py
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, aspect="equal")
+    ax.set_xlabel("$x$ (AU)")
+    ax.set_ylabel("$y$ (AU)")
+
+    for i in range(sol_x.shape[1]):
+        traj = ax.plot(
+            sol_x[:, i, 0],
+            sol_x[:, i, 1],
+            color=colors[i],
+        )
+        # Plot the last position with marker
+        ax.scatter(
+            sol_x[-1, i, 0],
+            sol_x[-1, i, 1],
+            marker="o",
+            color=traj[0].get_color(),
+            label=labels[i],
+        )
+
+    if legend:
+        fig.legend(loc="center right", borderaxespad=0.2)
+        fig.tight_layout()
+
+    plt.show()
+
+
 def plot_initial_conditions(
     system: NBodySystem,
     labels: list,
