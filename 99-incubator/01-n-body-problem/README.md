@@ -6,6 +6,15 @@
 
 Inspired by the *Three-Body Problem* Netflix series, this project simulates a solar system trapped in gravitational chaos. You are the navigator for a civilization living on the edge of destruction. The stars look stable now, but the math says doom is coming.
 
+## 🔭 The Simulation
+
+> **Visualizing Level 1: "False Stability"**
+>
+> The planet (Cyan) circles the Red Sun. It looks safe, but watch the Yellow and Orange suns. Their gravity is slowly pulling the planet into a heat trap.
+
+![Three-Body Simulation Demo](figures/false_stability_3yrs.gif)
+*(Above: A 3-year simulation of the orbit)*
+
 ## 🎮 The Gameplay
 
 Gravity is your enemy, but also your only way out.
