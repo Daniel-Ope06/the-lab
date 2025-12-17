@@ -4,6 +4,239 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def get_3_body_problem(
+    scenario_name: str
+) -> Tuple[NBodySystem, List[str | None], List[str | None], bool]:
+    """Returns initial conditions for 3-Body Problem scenarios
+    (plus one victim planet).
+
+    **Units:**
+    - Distance: AU
+    - Time: Days
+    - Mass: Solar Masses (M_sun)
+
+    **Scenarios:**
+    1. 'stable_era' (Hierarchical): Two suns close, one far. Predictable.
+    2. 'chaotic_era' (Random): Three suns in a dense cluster. Unpredictable.
+    3. 'figure_8' (The Solution): The famous stable periodic solution.
+    """
+    # Gravitational Constant for (AU, Days, Solar Mass)
+    G_GAUSSIAN: float = 0.00029591220828
+    EARTH_MASS: float = 3.003e-6
+    SUN_MASS: float = 1.0
+
+    # Default Return Variables
+    system: NBodySystem | None = None
+    labels: List[str | None] = ["Sun A", "Sun B", "Sun C", "Home Planet"]
+    colors: List[str | None] = ["orange", "yellow", "red", "cyan"]
+    legend: bool = True
+
+    if scenario_name == "always_stable":
+        # --- SCENARIO 1: The "Sandbox" (Always Stable) ---
+        # Sun C orbits in a perfect circle at 4.0 AU. Nothing bad ever happens.
+        binary_separation: float = 0.2
+        third_star_distance: float = 4.0
+        planet_radius: float = 0.1
+
+        # Velocities for Circular Orbits
+        v_binary: float = np.sqrt(
+            G_GAUSSIAN * (2 * SUN_MASS) / binary_separation)
+        v_third_star: float = np.sqrt(
+            G_GAUSSIAN * (2 * SUN_MASS) / third_star_distance)
+        v_planet: float = np.sqrt(
+            G_GAUSSIAN * (0.5 * SUN_MASS) / planet_radius)
+
+        positions = np.array([
+            [binary_separation / 2, 0, 0],
+            [-binary_separation / 2, 0, 0],
+            [0, third_star_distance, 0],
+            [planet_radius, third_star_distance, 0]  # Planet right of Sun C
+        ])
+        velocities = np.array([
+            [0, v_binary / 2, 0],
+            [0, -v_binary / 2, 0],
+            [-v_third_star, 0, 0],
+            [-v_third_star, v_planet, 0]  # Planet vel (Y) relative to Sun C
+        ])
+        masses = np.array([SUN_MASS, SUN_MASS, 0.5 * SUN_MASS, EARTH_MASS])
+
+        system = NBodySystem(
+            num_bodies=4,
+            positions=positions,
+            velocities=velocities,
+            masses=masses,
+            G=G_GAUSSIAN
+        )
+
+    elif scenario_name == "false_stability":
+        # --- SCENARIO 2: The False Hope ---
+        # Setup: Hierarchical Binary (Two suns close, one far).
+        # Planet: Orbits Sun C (the lonely far one). It feels safe... for now.
+
+        # Physics Parameters (in AU)
+        binary_separation = 0.2  # Two suns distance from each other
+        start_distance_C: float = 6.0  # Starts far away
+        perihelion_C: float = 1.2  # How close it will eventually get
+        planet_orbital_radius: float = 0.1  # Orbiting Sun C
+
+        # Calculate Orbital Velocities (Circular Approximation)
+        # Velocity of Binary Stars A & B orbiting their shared center of mass
+        # v = sqrt(G * M_total / r) -> Each orbits at r/2 with specific v
+        v_binary = np.sqrt(
+            G_GAUSSIAN * (2 * SUN_MASS) / binary_separation)
+
+        # Velocity of Star C orbiting the heavy Binary Pair
+        # We need Vis-Viva Equation for Elliptical Orbit
+        # v = sqrt( GM * (2/r - 1/a) )
+        # Semi-major axis (a) = (perihelion + aphelion) / 2
+        semi_major_axis_C: float = (perihelion_C + start_distance_C) / 2
+
+        # Velocity at Aphelion (slowest point)
+        v_aphelion_C: float = np.sqrt(
+            G_GAUSSIAN * (2 * SUN_MASS) * (
+                2/start_distance_C - 1/semi_major_axis_C))
+
+        # Velocity of Planet orbiting Star C
+        v_planet = np.sqrt(
+            G_GAUSSIAN * (0.5 * SUN_MASS) / planet_orbital_radius)
+
+        # Construct Arrays
+        # Shape: (4, 3) for 4 bodies in x, y, z
+        positions = np.array([
+            [binary_separation / 2, 0, 0],      # Sun A
+            [-binary_separation / 2, 0, 0],     # Sun B
+            [0, start_distance_C, 0],           # Sun C
+            # Planet (offset from C)
+            [planet_orbital_radius, start_distance_C, 0]
+        ])
+        velocities = np.array([
+            [0, v_binary / 2, 0],                # Sun A
+            [0, -v_binary / 2, 0],               # Sun B
+            [-v_aphelion_C, 0, 0],               # Sun C
+            # Planet (Star C vel + Orbit vel)
+            [-v_aphelion_C, v_planet, 0]
+        ])
+        masses = np.array(
+            [SUN_MASS, SUN_MASS, 0.5 * SUN_MASS, EARTH_MASS])
+
+        system = NBodySystem(
+            num_bodies=4,
+            positions=positions,
+            velocities=velocities,
+            masses=masses,
+            G=G_GAUSSIAN
+        )
+    else:
+        raise ValueError(f"Unknown scenario: {scenario_name}")
+
+    assert type(system) is NBodySystem
+    system.recenter_com_to_origin()
+    return (system, labels, colors, legend)
+
+
+def set_3d_axes_equal(ax: plt.Axes) -> None:  # type: ignore
+    """
+    Make axes of 3D plot have equal scale
+
+    Parameters
+    ----------
+    ax : matplotlib axis
+        The axis to set equal scale
+
+    Reference
+    ---------
+    karlo,
+    https://stackoverflow.com/questions/13685386/how-to-set-the-equal-aspect-ratio-for-all-axes-x-y-z
+
+    Source
+    ------
+    - Original code by Alvin.
+    - Retrieved from:
+    https://github.com/alvinng4/grav_sim/blob/main/5_steps_to_n_body_simulation/python/common.py
+    """
+
+    x_limits = ax.get_xlim3d()  # type: ignore
+    y_limits = ax.get_ylim3d()  # type: ignore
+    z_limits = ax.get_zlim3d()  # type: ignore
+
+    x_range = abs(x_limits[1] - x_limits[0])
+    x_middle = np.mean(x_limits)
+    y_range = abs(y_limits[1] - y_limits[0])
+    y_middle = np.mean(y_limits)
+    z_range = abs(z_limits[1] - z_limits[0])
+    z_middle = np.mean(z_limits)
+
+    # The plot bounding box is a sphere in the sense of the infinity
+    # norm, hence I call half the max range the plot radius.
+    plot_radius = 0.5 * max([x_range, y_range, z_range])
+
+    ax.set_xlim3d(  # type: ignore
+        [x_middle - plot_radius, x_middle + plot_radius])
+    ax.set_ylim3d(  # type: ignore
+        [y_middle - plot_radius, y_middle + plot_radius])
+    ax.set_zlim3d(  # type: ignore
+        [z_middle - plot_radius, z_middle + plot_radius])
+
+
+def plot_3d_trajectory(
+    sol_x: np.ndarray,
+    labels: list,
+    colors: list,
+    legend: bool,
+) -> None:
+    """
+    Plot the 3D trajectory.
+
+    Parameters
+    ----------
+    sol_x : np.ndarray
+        Solution position array with shape (N_steps, num_particles, 3).
+    labels : list
+        List of labels for the particles.
+    colors : list
+        List of colors for the particles.
+    legend : bool
+        Whether to show the legend.
+
+    Source
+    ------
+    - Original code by Alvin.
+    - Retrieved from:
+    https://github.com/alvinng4/grav_sim/blob/main/5_steps_to_n_body_simulation/python/common.py
+    """
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_xlabel("$x$ (AU)")
+    ax.set_ylabel("$y$ (AU)")
+    ax.set_zlabel("$z$ (AU)")  # type: ignore
+
+    for i in range(sol_x.shape[1]):
+        traj = ax.plot(
+            sol_x[:, i, 0],
+            sol_x[:, i, 1],
+            sol_x[:, i, 2],
+            color=colors[i],
+        )
+        # Plot the last position with marker
+        ax.scatter(
+            sol_x[-1, i, 0],
+            sol_x[-1, i, 1],
+            sol_x[-1, i, 2],
+            marker="o",
+            color=traj[0].get_color(),
+            label=labels[i],
+        )
+
+    set_3d_axes_equal(ax)
+
+    if legend:
+        ax.legend(loc="center right", bbox_to_anchor=(1.325, 0.5))
+        fig.subplots_adjust(right=0.7)
+
+    plt.show()
+
+
 def plot_trajectory(
     sol_x: np.ndarray,
     labels: list,
