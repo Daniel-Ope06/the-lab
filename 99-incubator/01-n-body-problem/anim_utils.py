@@ -123,7 +123,7 @@ def draw_frames(
             fig.subplots_adjust(right=0.7)
             fig.tight_layout()
 
-        plt.savefig(FRAMES_DIR / f"frames_{n:05d}.png", dpi=80)
+        plt.savefig(FRAMES_DIR / f"frames_{n:05d}.png", dpi=150)
         plt.close("all")
     print("\nDone!")
 
