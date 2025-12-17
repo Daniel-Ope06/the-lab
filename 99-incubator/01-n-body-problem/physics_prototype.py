@@ -82,7 +82,7 @@ draw_frames(
     masses=n_body_system.masses,
     view_limit=1.0,
     target_body_index=2,  # Track Sun C
-    visual_scale=1.5,
+    visual_scale=0.5,
     hide_grid=True
 )
 
