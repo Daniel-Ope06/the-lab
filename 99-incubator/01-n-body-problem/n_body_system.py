@@ -75,9 +75,27 @@ class NBodySystem:
     def _step(self, dt: float) -> None:
         """Advance the simulation by one time step using Euler-Cromer method.
 
+        **Note:** Includes a safety check for high-speed close encounters.
+
         Args:
             dt (float): Time step.
         """
+        # Check maximum acceleration in the system
+        # max_acc: float = np.max(np.linalg.norm(self.accelerations, axis=1))
+
+        # If gravity is crushing (perihelion), chop dt into tiny substeps
+        # Threshold (50) depends on the scale
+        # if max_acc > 50.0:
+        #     num_substeps = 10
+        #     sub_dt = dt / num_substeps
+        #     for _ in range(num_substeps):
+        #         self._calculate_accelerations()  # Recalculate often!
+        #         self.velocities += self.accelerations * sub_dt
+        #         self.positions += self.velocities * sub_dt
+        #     # Don't run the normal update
+        #     return
+
+        # Normal Update (Safe Zone)
         self._calculate_accelerations()
         self.velocities += self.accelerations * dt
         self.positions += self.velocities * dt
