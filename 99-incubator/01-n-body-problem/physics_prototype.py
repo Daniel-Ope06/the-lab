@@ -12,6 +12,13 @@ from math_utils import (
     plot_3d_trajectory
 )
 
+from anim_utils import (
+    draw_frames,
+    create_gif,
+    create_mp4,
+    delete_frames
+)
+
 # %%
 n_body_system, labels, colors, legend = get_3_body_problem("false_stability")
 
@@ -34,6 +41,8 @@ pos_history, vel_history, time_history = n_body_system.run(
     output_interval=OUTPUT_INTERVAL
 )
 
+num_frames = len(time_history)
+
 # %%
 plot_trajectory(
     sol_x=pos_history,
@@ -48,5 +57,42 @@ plot_3d_trajectory(
     colors=colors,
     legend=legend
 )
+
+# %%
+# God's eye view
+draw_frames(
+    positions=pos_history,
+    labels=labels,
+    colors=colors,
+    legend=legend,
+    num_frames=num_frames,
+    masses=n_body_system.masses,
+    view_limit=4.0,       # Zoom out to see everything
+    visual_scale=1.5
+)
+
+# %%
+# Following Sun C
+draw_frames(
+    positions=pos_history,
+    labels=labels,
+    colors=colors,
+    legend=legend,
+    num_frames=num_frames,
+    masses=n_body_system.masses,
+    view_limit=1.0,
+    target_body_index=2,  # Track Sun C
+    visual_scale=1.5,
+    hide_grid=True
+)
+
+# %%
+create_gif(num_frames)
+
+# %%
+create_mp4(num_frames)
+
+# %%
+delete_frames(num_frames)
 
 # %%
