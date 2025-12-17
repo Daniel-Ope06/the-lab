@@ -1,23 +1,32 @@
-# N-Body Gravity & Trajectory Optimization
+# Three-Body Chaos: Orbital Survival
 
-## The Concept
+## 🌌 The Concept
 
-Build a high-precision solar system simulation that visualizes the "Three-Body Problem" or calculates the most efficient fuel path (Hohmann Transfer) between planets.
+**Three Suns. One Doomed Planet. Can you escape?**
 
-## The Workflow
+Inspired by the *Three-Body Problem* Netflix series, this project simulates a solar system trapped in gravitational chaos. You are the navigator for a civilization living on the edge of destruction. The stars look stable now, but the math says doom is coming.
 
-* **Python:** Write the core math logic using **NumPy** or **SciPy** to calculate the gravitational forces and orbital paths accurately.
-* **Godot:** Use Godot strictly as the "Visualization Layer" to render the planets and trails in real-time 2D.
-* **Bonus:** Add a "Launch" button that calculates the precise angle/thrust needed to get a rocket from Earth to Mars using the physics engine.
+## 🎮 The Gameplay
 
-## The Deployment
+Gravity is your enemy, but also your only way out.
 
-* A playable game on itch.io (web, windows & mac).
-* Use 2D art assets based on QZed characters and branding.
-* Publish to QZed website for others to discover.
+- **The Trap:** The simulation generates *metastable* scenarios. The orbit looks safe, but in the near future the suns will align to crush your planet.
+- **The Prediction:** Use the simulation to look into the future and find the exact moment the physics breaks.
+- **The Escape:**
 
-## References
+## 🛠 The Workflow
 
-* [5 steps to N-body simulation](https://alvinng4.github.io/grav_sim/5_steps_to_n_body_simulation/)
-* [Making an N-body simulation](https://www.youtube.com/watch?v=L9N7ZbGSckk)
-* [N-body example in Unity](https://www.reddit.com/r/Unity3D/comments/l5mvb5/a_hobby_prototype_around_nbody_gravity_and/)
+- **The Lab (Python):** Where we prototype the hard science. We are building a custom physics engine to simulate realistic N-Body gravity and predict chaotic orbits.
+- **The Game (Godot):** Where we bring it to life. The final version will be a 2D game with interactive flight controls and mission planning.
+
+## 🚀 The Plan
+
+- **Release:** A free game on itch.io (Web, Windows, Mac).
+- **Art:** Featuring *QZed* characters and style.
+- **Goal:** A showcase of real physics powering fun gameplay.
+
+## 🔭 References
+
+- [5 steps to N-body simulation](https://alvinng4.github.io/grav_sim/5_steps_to_n_body_simulation/)
+- [Making an N-body simulation](https://www.youtube.com/watch?v=L9N7ZbGSckk)
+- [N-body example in Unity](https://www.reddit.com/r/Unity3D/comments/l5mvb5/a_hobby_prototype_around_nbody_gravity_and/)
