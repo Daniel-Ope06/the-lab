@@ -6,15 +6,15 @@
 
 # %%
 from math_utils import (
-    get_initial_conditions,
+    get_3_body_problem,
     plot_initial_conditions,
-    plot_trajectory
+    plot_trajectory,
+    plot_3d_trajectory
 )
 
 # %%
-INITIAL_CONDITION: str = "solar_system"
-n_body_system, labels, colors, legend = get_initial_conditions(
-    INITIAL_CONDITION)
+n_body_system, labels, colors, legend = get_3_body_problem("false_stability")
+
 plot_initial_conditions(
     system=n_body_system,
     labels=labels,
@@ -23,9 +23,9 @@ plot_initial_conditions(
 )
 
 # %%
-TIME_FRAME: float = 200.0 * 365.24  # 200 years to days
-TIME_STEP: float = 1.0
-OUTPUT_INTERVAL: float = 0.1 * 365.24
+TIME_FRAME: float = 3 * 365.24  # years to days
+TIME_STEP: float = 0.01
+OUTPUT_INTERVAL: float = 0.01 * 365.24
 
 # Launch Simulation
 pos_history, vel_history, time_history = n_body_system.run(
@@ -36,6 +36,13 @@ pos_history, vel_history, time_history = n_body_system.run(
 
 # %%
 plot_trajectory(
+    sol_x=pos_history,
+    labels=labels,
+    colors=colors,
+    legend=legend
+)
+
+plot_3d_trajectory(
     sol_x=pos_history,
     labels=labels,
     colors=colors,
