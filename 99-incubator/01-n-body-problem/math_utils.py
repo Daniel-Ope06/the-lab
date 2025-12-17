@@ -27,7 +27,7 @@ def get_3_body_problem(
 
     # Default Return Variables
     system: NBodySystem | None = None
-    labels: List[str | None] = ["Sun A", "Sun B", "Sun C", "Home Planet"]
+    labels: List[str | None] = ["Sun A", "Sun B", "Sun C", "Planet"]
     colors: List[str | None] = ["orange", "yellow", "red", "cyan"]
     legend: bool = True
 
