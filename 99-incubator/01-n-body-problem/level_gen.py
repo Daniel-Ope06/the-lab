@@ -1,7 +1,6 @@
 import numpy as np
 import random
 from typing import Tuple, List
-import matplotlib.pyplot as plt
 from n_body_system import NBodySystem
 
 
@@ -277,32 +276,3 @@ class LevelGenerator:
         vel_vec = R @ v_orb
 
         return pos_vec, vel_vec
-
-    def visualize_system(self, system, labels, colors):
-        """Helper to verify the generation with External Legend."""
-        fig = plt.figure(figsize=(10, 8))  # type: ignore
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_facecolor('black')
-
-        # Plot Bodies
-        for idx in range(system.num_bodies):
-            pos = system.positions[idx]
-            # Use scatter for bodies
-            ax.scatter(
-                pos[0], pos[1], pos[2],
-                color=colors[idx],
-                s=100 if idx < 2 else 20,  # Suns big, planets small
-                label=labels[idx])
-
-        # Formatting
-        ax.set_title("Procedural System (Binary Center + Varied Orbits)")
-        ax.set_xlabel("X (AU)")
-        ax.set_ylabel("Y (AU)")
-        ax.set_zlabel("Z (AU)")
-
-        # --- LEGEND OUTSIDE GRAPH ---
-        # bbox_to_anchor=(x, y) coordinates relative to the plot box
-        ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
-
-        plt.tight_layout()
-        plt.show()
