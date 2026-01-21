@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Treat all ipynb files as binary data
+*.ipynb binary
