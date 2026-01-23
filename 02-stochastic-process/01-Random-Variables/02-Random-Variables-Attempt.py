@@ -56,8 +56,8 @@ plt.show()
 # Plot a scatter plot
 # $$x=I_K, y=I_{K+1}$$
 
-x: np.ndarray = random_values[:-1]
-y: np.ndarray = random_values[1:]
+x: np.ndarray = random_values[:-1:2]
+y: np.ndarray = random_values[1::2]
 plt.scatter(x, y, s=1)
 plt.show()
 
@@ -74,8 +74,8 @@ plt.show()
 random_values_2: np.ndarray = np.array(
     [random.random() for _ in range(10_000)])
 
-x_2: np.ndarray = random_values_2[:-1]
-y_2: np.ndarray = random_values_2[1:]
+x_2: np.ndarray = random_values_2[:-1:2]
+y_2: np.ndarray = random_values_2[1::2]
 plt.scatter(x_2, y_2, s=1)
 plt.show()
 
@@ -98,8 +98,8 @@ plt.show()
 sampler: qmc.Sobol = qmc.Sobol(d=10_000)
 sample: np.ndarray = sampler.random().flatten()
 
-x_3: np.ndarray = sample[:-1]
-y_3: np.ndarray = sample[1:]
+x_3: np.ndarray = sample[:-1:2]
+y_3: np.ndarray = sample[1::2]
 plt.scatter(x_3, y_3, s=1)
 plt.show()
 
