@@ -1,12 +1,15 @@
 import random
 # import numpy
-# import math
+import math
 
+
+# def f(x):
+#     f = -x**6 + 28*x**5 - 307*x**4 + 1660*x**3 - 4564 * \
+#         x**2 + 5872*x + 2688  # Change this for each question
+#     return f
 
 def f(x):
-    f = -x**6 + 28*x**5 - 307*x**4 + 1660*x**3 - 4564 * \
-        x**2 + 5872*x + 2688  # Change this for each question
-    return f
+    return (math.sin(x) * math.cos(6*x))
 
 
 # xbest = random.uniform(0, 10)
@@ -40,4 +43,8 @@ def hill_climb_2():
 
 hill_climb_2()
 
+# Q1
 # xbest 4.901592491460627 fbest 5448.892101754391
+
+# Q2
+#
