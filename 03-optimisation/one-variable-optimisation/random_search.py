@@ -9,15 +9,37 @@ def f(x):
     return f
 
 
-xbest = random.uniform(0, 10)
-fbest = f(xbest)
-steps = 100
+# xbest = random.uniform(0, 10)
+# fbest = f(xbest)
+# steps = 100
 
-for i in range(1, steps):
-    xnew = random.uniform(0, 10)  # new random solution
-    fnew = f(xnew)
-    if fnew > fbest:
-        xbest = xnew
-        fbest = fnew
+# for i in range(1, steps):
+#     xnew = random.uniform(0, 10)  # new random solution
+#     fnew = f(xnew)
+#     if fnew > fbest:
+#         xbest = xnew
+#         fbest = fnew
 
-print('xbest', xbest, 'fbest', fbest)
+# print('xbest', xbest, 'fbest', fbest)
+
+
+# Version 2
+def random_search_2():
+    xbest = random.uniform(0, 10)
+    fbest = f(xbest)
+    steps = 100
+
+    for j in range(10):
+        for i in range(1, steps):
+            xnew = random.uniform(0, 10)  # new random solution
+            fnew = f(xnew)
+            if fnew > fbest:
+                xbest = xnew
+                fbest = fnew
+
+        print('xbest', xbest, 'fbest', fbest)
+
+
+random_search_2()
+
+# xbest 1.390940869600018 fbest 5482.144229828501
