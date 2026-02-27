@@ -1,0 +1,23 @@
+import random
+# import numpy
+# import math
+
+
+def f(x):
+    f = -x**6 + 28*x**5 - 307*x**4 + 1660*x**3 - 4564 * \
+        x**2 + 5872*x + 2688  # Change this for each question
+    return f
+
+
+xbest = random.uniform(0, 10)
+fbest = f(xbest)
+steps = 100
+
+for i in range(1, steps):
+    xnew = random.uniform(0, 10)  # new random solution
+    fnew = f(xnew)
+    if fnew > fbest:
+        xbest = xnew
+        fbest = fnew
+
+print('xbest', xbest, 'fbest', fbest)
