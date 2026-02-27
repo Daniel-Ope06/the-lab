@@ -25,11 +25,11 @@ def f(x):
 
 # Version 2
 def random_search_2():
-    xbest = random.uniform(0, 10)
-    fbest = f(xbest)
-    steps = 100
-
     for j in range(10):
+        xbest = random.uniform(0, 10)
+        fbest = f(xbest)
+        steps = 100
+
         for i in range(1, steps):
             xnew = random.uniform(0, 10)  # new random solution
             fnew = f(xnew)
@@ -42,4 +42,4 @@ def random_search_2():
 
 random_search_2()
 
-# xbest 1.390940869600018 fbest 5482.144229828501
+# xbest 1.3903672898291042 fbest 5482.14490302401
